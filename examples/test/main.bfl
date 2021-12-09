@@ -1,11 +1,25 @@
-malloc dividend, divisor,remainder,temp,one;
+malloc dividend, divisor,remainder,temp,temp2,one,divtemp,zero;
 main {
     copy 15 -> dividend;
     copy 6 -> divisor;
+    copy divisor -> divtemp;
 
     copy 1 -> one;
+    copy 0 -> zero;
     while(dividend) {
         
+        sub divtemp, one -> temp;
+        equals temp, zero -> temp2;
+        add remainder,one -> temp;
+        copy temp -> remainder;
+        if(temp2) {
+            copy divisor -> divtemp;
+            copy 0 -> temp2;
+            copy 0 -> remainder;
+        (temp2)
+        }
+
+
         sub dividend, one -> temp;
         copy temp -> dividend;
     (dividend)

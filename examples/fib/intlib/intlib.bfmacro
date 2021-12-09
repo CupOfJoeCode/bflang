@@ -1,2 +1,2 @@
-malloc accumulator, digit
+malloc accumulator, digit;
 @incmacro intlib/printint

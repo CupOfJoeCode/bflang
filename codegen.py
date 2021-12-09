@@ -37,7 +37,7 @@ class CodeGenerator:
     def generate(self):
         outBf = ''
         for t in self.tokens:
-            # outBf += '\n' + t.token_type + '\n'
+            # outBf += '\n' + t.original + '\n'
             if t.token_type == 'copy':
                 if t.args[0].isdigit():
                     outBf += self.run_at(t.args[1],
@@ -88,7 +88,7 @@ class CodeGenerator:
                 outBf += self.run_at(t.args[1], '[-]+')
                 outBf += self.run_at(t.args[0], '[')
                 outBf += self.run_at(t.args[1], '[-]')
-                outBf += self.run_at('ZEROPOINT', ']')
+                outBf += self.run_at(t.args[0], '[-]]')
             if t.token_type == 'equal':
                 outBf += self.run_at(t.args[2], '[-]')
                 outBf += self.run_at(t.args[0], '[>+>+<<-]>>[<<+>>-]<<')

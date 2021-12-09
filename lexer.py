@@ -1,10 +1,15 @@
 from re import L
 
+VALID_BF = "+-<>,.[]"
+
 
 class Token:
-    def __init__(self, token_type, args):
+    def __init__(self, token_type, args, original=""):
         self.token_type = token_type
         self.args = args
+        self.original = original
+        for c in VALID_BF:
+            self.original = self.original.replace(c, '')
 
     def __str__(self):
         return 'Token(' + self.token_type + ', ' + str(self.args) + ')'
@@ -24,7 +29,7 @@ class Lexer:
             lineType = line.split(' ')[0]
             lineRest = line.replace(lineType, '').replace(' ', '').split(',')
             if 'end' in lineRest:
-                outTokens.append(Token('end', [lineType]))
+                outTokens.append(Token('end', [lineType], line))
             else:
-                outTokens.append(Token(lineType, lineRest))
+                outTokens.append(Token(lineType, lineRest, line))
         return outTokens
