@@ -1,15 +1,5 @@
-malloc a, b, c, d, e, f, char;
+malloc;
 
 main {
-    getc a;
-    getc b;
-    mod a, b -> c;
-    sub a, c -> d;
-    not d -> e;
-    not e -> f;
-    if(e) {
-        
-        copy 0 -> e;
-    (e) }
-    printint e;
+    
 }

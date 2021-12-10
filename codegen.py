@@ -48,7 +48,7 @@ class CodeGenerator:
                     outBf += self.run_at(t.args[0], '>[<')
                     outBf += self.run_at(t.args[1], '+')
                     outBf += self.run_at(t.args[0], '>-]<')
-            if t.token_type == 'add':
+            elif t.token_type == 'add':
                 outBf += self.run_at(t.args[2], '[-]')
                 outBf += self.run_at(t.args[0], '[>+>+<<-]>>[<<+>>-]<<')
                 outBf += self.run_at(t.args[0], '>[<')
@@ -58,7 +58,7 @@ class CodeGenerator:
                 outBf += self.run_at(t.args[1], '>[<')
                 outBf += self.run_at(t.args[2], '+')
                 outBf += self.run_at(t.args[1], '>-]<')
-            if t.token_type == 'sub':
+            elif t.token_type == 'sub':
                 outBf += self.run_at(t.args[2], '[-]')
                 outBf += self.run_at(t.args[0], '[>+>+<<-]>>[<<+>>-]<<')
                 outBf += self.run_at(t.args[0], '>[<')
@@ -68,14 +68,14 @@ class CodeGenerator:
                 outBf += self.run_at(t.args[1], '>[<')
                 outBf += self.run_at(t.args[2], '-')
                 outBf += self.run_at(t.args[1], '>-]<')
-            if t.token_type == 'putc':
+            elif t.token_type == 'putc':
                 outBf += self.run_at(t.args[0], '.')
-            if t.token_type == 'getc':
+            elif t.token_type == 'getc':
                 outBf += self.run_at(t.args[0], ',')
-            if t.token_type == 'while':
+            elif t.token_type == 'while':
                 outBf += self.run_at(t.args[0].replace('(',
                                      '').replace(')', ''), '[')
-            if t.token_type == 'end':
+            elif t.token_type == 'end':
                 if len(t.args) != 0:
                     if t.args[0] != '':
                         if t.args[0] == '()':
@@ -84,12 +84,12 @@ class CodeGenerator:
                         else:
                             outBf += self.run_at(t.args[0].replace('(',
                                                                    '').replace(')', ''), ']')
-            if t.token_type == 'not':
+            elif t.token_type == 'not':
                 outBf += self.run_at(t.args[1], '[-]+')
                 outBf += self.run_at(t.args[0], '[')
                 outBf += self.run_at(t.args[1], '[-]')
                 outBf += self.run_at(t.args[0], '[-]]')
-            if t.token_type == 'equal':
+            elif t.token_type == 'equal':
                 outBf += self.run_at(t.args[2], '[-]')
                 outBf += self.run_at(t.args[0], '[>+>+<<-]>>[<<+>>-]<<')
                 outBf += self.run_at(t.args[0], '>[<')
@@ -100,7 +100,7 @@ class CodeGenerator:
                 outBf += self.run_at(t.args[2], '-')
                 outBf += self.run_at(t.args[1], '>-]<')
                 outBf += self.run_at(t.args[2], '>+<[>[-]<[-]]>[<+>-]<')
-            if t.token_type == 'nequal':
+            elif t.token_type == 'nequal':
                 outBf += self.run_at(t.args[2], '[-]')
                 outBf += self.run_at(t.args[0], '[>+>+<<-]>>[<<+>>-]<<')
                 outBf += self.run_at(t.args[0], '>[<')
@@ -111,7 +111,7 @@ class CodeGenerator:
                 outBf += self.run_at(t.args[2], '-')
                 outBf += self.run_at(t.args[1], '>-]<')
                 outBf += self.run_at(t.args[2], '>+<[>[-]<[-]]>[<+>-]<'*2)
-            if t.token_type == 'printint':
+            elif t.token_type == 'printint':
                 outBf += self.run_at('ENDPOINT', '[-]')
                 outBf += self.run_at(t.args[0], '[>+>+<<-]>>[<<+>>-]<<')
                 outBf += self.run_at(t.args[0], '>[<')
@@ -119,11 +119,11 @@ class CodeGenerator:
                 outBf += self.run_at(t.args[0], '>-]<')
                 outBf += self.run_at(
                     "ENDPOINT", ">>++++++++++<<[->+>-[>+>>]>[+[-<+>]>+>>]<<<<<<]>>[-]>>>++++++++++<[->-[>+>>]>[+[-<+>]>+>>]<<<<<]>[-]>>[>++++++[-<++++++++>]<.<<+>+>[-]]<[<[->-<]++++++[->++++++++<]>.[-]]<<++++++[-<++++++++>]<.[-]<<[-<+>]<[-]")
-            if t.token_type == 'inc':
+            elif t.token_type == 'inc':
                 outBf += self.run_at(t.args[0], '+'*int(t.args[1]))
-            if t.token_type == 'dec':
+            elif t.token_type == 'dec':
                 outBf += self.run_at(t.args[0], '-'*int(t.args[1]))
-            if t.token_type == 'mul':
+            elif t.token_type == 'mul':
                 outBf += self.run_at(t.args[2], '[-]')
                 outBf += self.run_at(t.args[0], '[>+>+<<-]>>[<<+>>-]<<')
                 outBf += self.run_at(t.args[0], '>[<')
@@ -132,7 +132,7 @@ class CodeGenerator:
                 outBf += self.run_at(t.args[2], '+')
                 outBf += self.run_at(t.args[1], '>-]<')
                 outBf += self.run_at(t.args[0], '>-]<')
-            if t.token_type == 'mod':
+            elif t.token_type == 'mod':
                 outBf += self.run_at(t.args[2], '[-]>[-]>[-]<<')  # Reset 3
                 outBf += self.run_at(t.args[0], '[>+<')
                 outBf += self.run_at(t.args[2], '>+<')
@@ -144,5 +144,8 @@ class CodeGenerator:
 
                 outBf += self.run_at(
                     t.args[2], '>>>[-]<[>+>>+<<<-]>>>[<<<+>>>-]<<<<<[-]>[<+>>>-[>+>+<<-]>>[<<+>>-]+<[>[-]<[-]]>[<+>-]<[<[-]<[>+>>+<<<-]>>>[<<<+>>>-]<<<<<[-]>>>>[-]]<<<-]>[-]>[-]>[-]>[-]<<<<<')
-
+            elif t.token_type not in ['malloc', 'main', '']:
+                print("Error In:\n    " + t.original)
+                print("Undefined Token: '" + t.token_type + "'")
+                exit(1)
         return outBf

@@ -1,0 +1,10 @@
+malloc;
+@incmacro io/io
+
+:io/io:;
+
+main {
+    :io/init:;
+    :io/getint:;
+    printint acc;
+}

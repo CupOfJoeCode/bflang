@@ -8,8 +8,9 @@ class Token:
         self.token_type = token_type
         self.args = args
         self.original = original
+        self.original_filtered = original
         for c in VALID_BF:
-            self.original = self.original.replace(c, '')
+            self.original_filtered = self.original_filtered.replace(c, '')
 
     def __str__(self):
         return 'Token(' + self.token_type + ', ' + str(self.args) + ')'

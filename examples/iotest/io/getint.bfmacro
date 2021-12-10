@@ -1,0 +1,13 @@
+copy 1 -> isntNewLine;
+copy 0 -> acc;
+while(isntNewLine) {
+    getc chr;
+    nequal chr, nlchar -> isntNewLine;
+    copy isntNewLine -> temp1;
+    if(temp1) {
+        sub chr, zerochar -> digit;
+        mul acc, nlchar -> temp0;
+        add temp0, digit -> acc;
+        copy 0 -> temp1;
+    (temp1) }
+(isntNewLine) }
