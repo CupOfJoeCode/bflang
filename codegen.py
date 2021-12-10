@@ -1,7 +1,7 @@
 from lexer import Token
 # To Add:
 #
-#  and, or, mul, mod, div, greater, less
+#  and, or, div, greater, less, pow, arrayload, arraystore
 #
 
 
@@ -10,10 +10,10 @@ class CodeGenerator:
         self.tokens = self.combine_malloc(inTokens)
         self.memory_map = {}
         malloc = self.tokens[0]
-        var_count = 4
+        var_count = 6
         for var in malloc.args:
             self.memory_map[var] = var_count
-            var_count += 4
+            var_count += 6
 
     def combine_malloc(self, tokens):
         outTokens = []
@@ -111,5 +111,38 @@ class CodeGenerator:
                 outBf += self.run_at(t.args[2], '-')
                 outBf += self.run_at(t.args[1], '>-]<')
                 outBf += self.run_at(t.args[2], '>+<[>[-]<[-]]>[<+>-]<'*2)
+            if t.token_type == 'printint':
+                outBf += self.run_at('ENDPOINT', '[-]')
+                outBf += self.run_at(t.args[0], '[>+>+<<-]>>[<<+>>-]<<')
+                outBf += self.run_at(t.args[0], '>[<')
+                outBf += self.run_at('ENDPOINT', '+')
+                outBf += self.run_at(t.args[0], '>-]<')
+                outBf += self.run_at(
+                    "ENDPOINT", ">>++++++++++<<[->+>-[>+>>]>[+[-<+>]>+>>]<<<<<<]>>[-]>>>++++++++++<[->-[>+>>]>[+[-<+>]>+>>]<<<<<]>[-]>>[>++++++[-<++++++++>]<.<<+>+>[-]]<[<[->-<]++++++[->++++++++<]>.[-]]<<++++++[-<++++++++>]<.[-]<<[-<+>]<[-]")
+            if t.token_type == 'inc':
+                outBf += self.run_at(t.args[0], '+'*int(t.args[1]))
+            if t.token_type == 'dec':
+                outBf += self.run_at(t.args[0], '-'*int(t.args[1]))
+            if t.token_type == 'mul':
+                outBf += self.run_at(t.args[2], '[-]')
+                outBf += self.run_at(t.args[0], '[>+>+<<-]>>[<<+>>-]<<')
+                outBf += self.run_at(t.args[0], '>[<')
+                outBf += self.run_at(t.args[1], '[>+>+<<-]>>[<<+>>-]<<')
+                outBf += self.run_at(t.args[1], '>[<')
+                outBf += self.run_at(t.args[2], '+')
+                outBf += self.run_at(t.args[1], '>-]<')
+                outBf += self.run_at(t.args[0], '>-]<')
+            if t.token_type == 'mod':
+                outBf += self.run_at(t.args[2], '[-]>[-]>[-]<<')  # Reset 3
+                outBf += self.run_at(t.args[0], '[>+<')
+                outBf += self.run_at(t.args[2], '>+<')
+                outBf += self.run_at(t.args[0], '-]>[<+>-]<')
+
+                outBf += self.run_at(t.args[1], '[>+<')
+                outBf += self.run_at(t.args[2], '>>+<<')
+                outBf += self.run_at(t.args[1], '-]>[<+>-]<')
+
+                outBf += self.run_at(
+                    t.args[2], '>>>[-]<[>+>>+<<<-]>>>[<<<+>>>-]<<<<<[-]>[<+>>>-[>+>+<<-]>>[<<+>>-]+<[>[-]<[-]]>[<+>-]<[<[-]<[>+>>+<<<-]>>>[<<<+>>>-]<<<<<[-]>>>>[-]]<<<-]>[-]>[-]>[-]>[-]<<<<<')
 
         return outBf
