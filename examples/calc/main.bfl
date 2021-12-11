@@ -1,0 +1,79 @@
+malloc num1, num2, digit, inchar, temp0, zerochar, spacechar, operator, ten, counter, result, result2,cmp, rchar;
+
+\
+    An Example Calculator
+    Made by Joe Janicki
+
+    When compiled, run and input a 3 digit number, followed by an operator, followed by another 3 digit number.
+    Eg:
+    002+002
+    025/005
+    102*002
+    200-015
+\
+
+main {
+    \Define some constants\
+    copy 10 -> ten;
+    copy '0' -> zerochar;
+    copy 'r' -> rchar;
+    copy 32 -> spacechar; 
+
+    copy 3 -> counter; \Scan 3 digits into num1\
+    while(counter) {
+        getc inchar;
+        sub inchar, zerochar -> digit;
+        mul num1, ten -> temp0;
+        add temp0, digit -> num1;
+        dec counter, 1;
+    (counter) }
+
+    \Input operator\
+    getc operator;
+
+    copy 3 -> counter;
+    while(counter) { \Scan 3 digits into num2\
+        getc inchar;
+        sub inchar, zerochar -> digit;
+        mul num2, ten -> temp0;
+        add temp0, digit -> num2;
+        dec counter, 1;
+    (counter) }
+
+    copy '+' -> temp0;
+    equal operator, temp0 -> cmp; \Check for addition\
+    if(cmp) {
+        add num1, num2 -> result;
+        printint result;
+        copy 0 -> cmp;
+    (cmp) }
+
+    copy '-' -> temp0;
+    equal operator, temp0 -> cmp; \Check for subtraction\
+    if(cmp) {
+        sub num1, num2 -> result;
+        printint result;
+        copy 0 -> cmp;
+    (cmp) }
+
+    copy '*' -> temp0;
+    equal operator, temp0 -> cmp; \Check for multiplication\
+    if(cmp) {
+        mul num1, num2 -> result;
+        printint result;
+        copy 0 -> cmp;
+    (cmp) }
+
+    copy '/' -> temp0;
+    equal operator, temp0 -> cmp; \Check for division\
+    if(cmp) {
+        div num1, num2 -> result;
+        mod num1, num2 -> result2;
+        printint result;
+        putc spacechar;
+        putc rchar;
+        printint result2;
+        copy 0 -> cmp;
+    (cmp) }
+
+}

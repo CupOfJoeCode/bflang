@@ -28,14 +28,17 @@ class PreProcessor:
         code = code.replace('while(', 'while ')
         outCode = ''
         scan = True
+        outChar = ''
         for c in code:
             if c == "'":
-                scan = False
+                scan = not scan
+                if scan == True:
+                    outCode += str(ord(outChar[0]))
+                    outChar = ''
             elif scan:
                 outCode += c
             else:
-                outCode += str(ord(c))
-                scan = True
+                outChar += c
         return outCode
 
     def expand_macros(self, inCode):
