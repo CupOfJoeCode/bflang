@@ -70,9 +70,12 @@ main {
         div num1, num2 -> result;
         mod num1, num2 -> result2;
         printint result;
-        putc spacechar;
-        putc rchar;
-        printint result2;
+        if(result2) {
+            putc spacechar;
+            putc rchar;
+            printint result2;
+            copy 0 -> result2;
+        (result2) }
         copy 0 -> cmp;
     (cmp) }
 
