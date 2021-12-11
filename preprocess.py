@@ -67,7 +67,7 @@ class PreProcessor:
                 macro += c
         for m in macros:
             outCode = outCode.replace(':' + m + ':', macros[m])
-        return outCode
+        return self.remove_comments(outCode)
 
     def process(self):
         with open(self.folder + '/main.bfl', 'r') as fp:
