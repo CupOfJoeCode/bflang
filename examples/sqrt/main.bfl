@@ -1,0 +1,38 @@
+malloc num, base, baseCopy, result, digit, inChar, temp0, zeroChar, ten, counter, ltflag;
+
+\
+    Square Root Example
+    Made By Joe Janicki
+
+    Input a number from 000-255
+    Prints out the nearest integer square root of the number
+\
+main {
+    copy 10 -> ten;
+    copy '0' -> zeroChar;
+
+    copy 3 -> counter; \Scan 3 digits into num1\
+    while(counter) {
+        getc inChar;
+        sub inChar, zeroChar -> digit;
+        mul num, ten -> temp0;
+        add temp0, digit -> num;
+        dec counter, 1;
+    (counter) }
+
+    
+
+    copy 1 -> ltflag;
+    copy 0 -> base;
+    while(ltflag) {
+        copy base -> baseCopy;
+        mul base, baseCopy -> result;
+        less result, num -> ltflag;
+        inc base, 1;
+    (ltflag) }
+    dec base, 1;
+    printint base;
+
+
+
+}

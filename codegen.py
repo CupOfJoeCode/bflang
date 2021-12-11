@@ -14,6 +14,7 @@ class CodeGenerator:
     def __init__(self, inTokens):
         self.tokens = self.combine_malloc(inTokens)
         self.memory_map = {}
+        self.current_line = ''
         malloc = self.tokens[0]
         var_count = 6
         for var in malloc.args:
@@ -37,6 +38,10 @@ class CodeGenerator:
         return outTokens
 
     def run_at(self, var, code):
+        if var not in self.memory_map:
+            print("Error In:\n    " + self.current_line)
+            print("Variable '" + var + "' is Not Declared\n")
+            exit(1)
         return '>'*self.memory_map[var] + code + '<'*self.memory_map[var]
 
     def get_mod(self, arg0, arg1, arg2):
@@ -58,6 +63,7 @@ class CodeGenerator:
         for t in self.tokens:
             try:
                 # outBf += '\n' + t.original + '\n'
+                self.current_line = t.original
                 if t.token_type == 'copy':
                     if t.args[0].isdigit():
                         outBf += self.run_at(t.args[1],
