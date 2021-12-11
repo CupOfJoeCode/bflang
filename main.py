@@ -15,9 +15,8 @@ def main():
     outText = ''
     for i in cg.tokens:
         outText += str(i) + '\n'
-    with open('out.bf', 'w') as fp:
+    with open(IN_FOLDER + '/out.bf', 'w') as fp:
         fp.write(cg.generate())
-        # fp.write(outText)
 
 
 if __name__ == '__main__':
