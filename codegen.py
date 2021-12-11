@@ -1,7 +1,7 @@
 from lexer import Token
 # To Add:
 #
-#  and, or, div, greater, less, pow, arrayload, arraystore
+#  and, or, greater, less, pow, arrayload, arraystore
 #
 
 MOD_PROG = '>>>[-]<[>+>>+<<<-]>>>[<<<+>>>-]<<<<<[-]>[<+>>>-[>+>+<<-]>>[<<+>>-]+<[>[-]<[-]]>[<+>-]<[<[-]<[>+>>+<<<-]>>>[<<<+>>>-]<<<<<[-]>>>>[-]]<<<-]>[-]>[-]>[-]>[-]<<<<<'
