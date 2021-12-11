@@ -1,2 +1,0 @@
-malloc ac0,ac1,acout,temp0,temp1,temp2,temp3,temp4,temp5,temp6,temp7,one,zero;
-@incmacro math/mod

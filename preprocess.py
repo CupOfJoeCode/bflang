@@ -7,6 +7,16 @@ class PreProcessor:
         self.mainfile = ''
         self.macro_depth = 16
 
+    def remove_comments(self, inCode):
+        scan = True
+        outCode = ''
+        for c in inCode:
+            if c == '\\':
+                scan = not scan
+            elif scan:
+                outCode += c
+        return outCode
+
     def simplify(self, inCode):
         code = inCode.replace(
             '\t', ' ')  # Replace tabs with 1 space and remove new line
@@ -59,6 +69,7 @@ class PreProcessor:
     def process(self):
         with open(self.folder + '/main.bfl', 'r') as fp:
             self.mainfile = fp.read()
+        self.mainfile = self.remove_comments(self.mainfile)
         for i in range(self.macro_depth):
             self.mainfile = self.expand_macros(self.mainfile)
         self.mainfile = self.simplify(self.mainfile)
