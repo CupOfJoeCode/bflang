@@ -1,11 +1,13 @@
 from lexer import Token
 # To Add:
 #
-#  and, or, pow, arrayload, arraystore
+#  pow, arrayload, arraystore
 #
 
 MOD_PROG = '>>>[-]<[>+>>+<<<-]>>>[<<<+>>>-]<<<<<[-]>[<+>>>-[>+>+<<-]>>[<<+>>-]+<[>[-]<[-]]>[<+>-]<[<[-]<[>+>>+<<<-]>>>[<<<+>>>-]<<<<<[-]>>>>[-]]<<<-]>[-]>[-]>[-]>[-]<<<<<'
-PRINTINT_PROG = ">>++++++++++<<[->+>-[>+>>]>[+[-<+>]>+>>]<<<<<<]>>[-]>>>++++++++++<[->-[>+>>]>[+[-<+>]>+>>]<<<<<]>[-]>>[>++++++[-<++++++++>]<.<<+>+>[-]]<[<[->-<]++++++[->++++++++<]>.[-]]<<++++++[-<++++++++>]<.[-]<<[-<+>]<[-]"
+PRINTINT_PROG = '>>++++++++++<<[->+>-[>+>>]>[+[-<+>]>+>>]<<<<<<]>>[-]>>>++++++++++<[->-[>+>>]>[+[-<+>]>+>>]<<<<<]>[-]>>[>++++++[-<++++++++>]<.<<+>+>[-]]<[<[->-<]++++++[->++++++++<]>.[-]]<<++++++[-<++++++++>]<.[-]<<[-<+>]<[-]'
+AND_PROG = '>> > [-]<<< > [ > [ > + < [-]  ] < [-] ]>>[<<<+>> > -] < [-] < [-] <'
+OR_PROG = '>[>>[-]+<<[-]] > [ > [-]+<[-]] > [<<<+>> > [-]]<<<'
 
 
 class CodeGenerator:
@@ -54,137 +56,166 @@ class CodeGenerator:
     def generate(self):
         outBf = ''
         for t in self.tokens:
-            # outBf += '\n' + t.original + '\n'
-            if t.token_type == 'copy':
-                if t.args[0].isdigit():
-                    outBf += self.run_at(t.args[1],
-                                         '[-]' + ('+'*int(t.args[0])))
-                else:
-                    outBf += self.run_at(t.args[1], '[-]')
+            try:
+                # outBf += '\n' + t.original + '\n'
+                if t.token_type == 'copy':
+                    if t.args[0].isdigit():
+                        outBf += self.run_at(t.args[1],
+                                             '[-]' + ('+'*int(t.args[0])))
+                    else:
+                        outBf += self.run_at(t.args[1], '[-]')
+                        outBf += self.run_at(t.args[0],
+                                             '[>+>+<<-]>>[<<+>>-]<<')
+                        outBf += self.run_at(t.args[0], '>[<')
+                        outBf += self.run_at(t.args[1], '+')
+                        outBf += self.run_at(t.args[0], '>-]<')
+                elif t.token_type == 'add':
+                    outBf += self.run_at(t.args[2], '[-]')
                     outBf += self.run_at(t.args[0], '[>+>+<<-]>>[<<+>>-]<<')
                     outBf += self.run_at(t.args[0], '>[<')
-                    outBf += self.run_at(t.args[1], '+')
+                    outBf += self.run_at(t.args[2], '+')
                     outBf += self.run_at(t.args[0], '>-]<')
-            elif t.token_type == 'add':
-                outBf += self.run_at(t.args[2], '[-]')
-                outBf += self.run_at(t.args[0], '[>+>+<<-]>>[<<+>>-]<<')
-                outBf += self.run_at(t.args[0], '>[<')
-                outBf += self.run_at(t.args[2], '+')
-                outBf += self.run_at(t.args[0], '>-]<')
-                outBf += self.run_at(t.args[1], '[>+>+<<-]>>[<<+>>-]<<')
-                outBf += self.run_at(t.args[1], '>[<')
-                outBf += self.run_at(t.args[2], '+')
-                outBf += self.run_at(t.args[1], '>-]<')
-            elif t.token_type == 'sub':
-                outBf += self.run_at(t.args[2], '[-]')
-                outBf += self.run_at(t.args[0], '[>+>+<<-]>>[<<+>>-]<<')
-                outBf += self.run_at(t.args[0], '>[<')
-                outBf += self.run_at(t.args[2], '+')
-                outBf += self.run_at(t.args[0], '>-]<')
-                outBf += self.run_at(t.args[1], '[>+>+<<-]>>[<<+>>-]<<')
-                outBf += self.run_at(t.args[1], '>[<')
-                outBf += self.run_at(t.args[2], '-')
-                outBf += self.run_at(t.args[1], '>-]<')
-            elif t.token_type == 'putc':
-                outBf += self.run_at(t.args[0], '.')
-            elif t.token_type == 'getc':
-                outBf += self.run_at(t.args[0], ',')
-            elif t.token_type == 'while':
-                outBf += self.run_at(t.args[0].replace('(',
-                                     '').replace(')', ''), '[')
-            elif t.token_type == 'end':
-                if len(t.args) != 0:
-                    if t.args[0] != '':
-                        if t.args[0] == '()':
-                            outBf += self.run_at('ZEROPOINT'.replace('(',
-                                                                     '').replace(')', ''), ']')
-                        else:
-                            outBf += self.run_at(t.args[0].replace('(',
-                                                                   '').replace(')', ''), ']')
-            elif t.token_type == 'not':
-                outBf += self.run_at(t.args[1], '[-]+')
-                outBf += self.run_at(t.args[0], '[')
-                outBf += self.run_at(t.args[1], '[-]')
-                outBf += self.run_at(t.args[0], '[-]]')
-            elif t.token_type == 'equal':
-                outBf += self.run_at(t.args[2], '[-]')
-                outBf += self.run_at(t.args[0], '[>+>+<<-]>>[<<+>>-]<<')
-                outBf += self.run_at(t.args[0], '>[<')
-                outBf += self.run_at(t.args[2], '+')
-                outBf += self.run_at(t.args[0], '>-]<')
-                outBf += self.run_at(t.args[1], '[>+>+<<-]>>[<<+>>-]<<')
-                outBf += self.run_at(t.args[1], '>[<')
-                outBf += self.run_at(t.args[2], '-')
-                outBf += self.run_at(t.args[1], '>-]<')
-                outBf += self.run_at(t.args[2], '>+<[>[-]<[-]]>[<+>-]<')
-            elif t.token_type == 'nequal':
-                outBf += self.run_at(t.args[2], '[-]')
-                outBf += self.run_at(t.args[0], '[>+>+<<-]>>[<<+>>-]<<')
-                outBf += self.run_at(t.args[0], '>[<')
-                outBf += self.run_at(t.args[2], '+')
-                outBf += self.run_at(t.args[0], '>-]<')
-                outBf += self.run_at(t.args[1], '[>+>+<<-]>>[<<+>>-]<<')
-                outBf += self.run_at(t.args[1], '>[<')
-                outBf += self.run_at(t.args[2], '-')
-                outBf += self.run_at(t.args[1], '>-]<')
-                outBf += self.run_at(t.args[2], '>+<[>[-]<[-]]>[<+>-]<'*2)
-            elif t.token_type == 'printint':
-                outBf += self.run_at('ENDPOINT', '[-]')
-                outBf += self.run_at(t.args[0], '[>+>+<<-]>>[<<+>>-]<<')
-                outBf += self.run_at(t.args[0], '>[<')
-                outBf += self.run_at('ENDPOINT', '+')
-                outBf += self.run_at(t.args[0], '>-]<')
-                outBf += self.run_at("ENDPOINT", PRINTINT_PROG)
-            elif t.token_type == 'inc':
-                outBf += self.run_at(t.args[0], '+'*int(t.args[1]))
-            elif t.token_type == 'dec':
-                outBf += self.run_at(t.args[0], '-'*int(t.args[1]))
-            elif t.token_type == 'mul':
-                outBf += self.run_at(t.args[2], '[-]')
-                outBf += self.run_at(t.args[0], '[>+>+<<-]>>[<<+>>-]<<')
-                outBf += self.run_at(t.args[0], '>[<')
-                outBf += self.run_at(t.args[1], '[>+>+<<-]>>[<<+>>-]<<')
-                outBf += self.run_at(t.args[1], '>[<')
-                outBf += self.run_at(t.args[2], '+')
-                outBf += self.run_at(t.args[1], '>-]<')
-                outBf += self.run_at(t.args[0], '>-]<')
-            elif t.token_type == 'mod':
-                outBf += self.get_mod(t.args[0], t.args[1], t.args[2])
-            elif t.token_type == 'div':
-                outBf += self.get_mod(t.args[0], t.args[1], t.args[2])
-                outBf += self.run_at(t.args[0], '[>+>+<<-]>>[<<+>>-]<<')
-                outBf += self.run_at(t.args[2], '[')
-                outBf += self.run_at(t.args[0], '>-<')
-                outBf += self.run_at(t.args[2], '-]')
-                outBf += self.run_at(t.args[0], '>[<')
-                outBf += self.run_at(t.args[2], '+')
-                outBf += self.run_at(t.args[1], '[>+>+<<-]>>[<<+>>-]<<')
-                outBf += self.run_at(t.args[1], '>[<')
-                outBf += self.run_at(t.args[0], '>-<')
-                outBf += self.run_at(t.args[1], '>-]<')
-                outBf += self.run_at(t.args[0], '>]<')
-            elif t.token_type == 'less':
-                outBf += self.get_mod(t.args[0], t.args[1], t.args[2])
-                outBf += self.run_at(t.args[0], '[>+>+<<-]>>[<<+>>-]<<')
-                outBf += self.run_at(t.args[2], '[')
-                outBf += self.run_at(t.args[0], '>-<')
-                outBf += self.run_at(t.args[2], '-]')
-                outBf += self.run_at(t.args[0], '>[<')
-                outBf += self.run_at(t.args[2], '+')
-                outBf += self.run_at(t.args[0], '>-]<')
-                outBf += self.run_at(t.args[2], '>+<[>[-]<[-]]>[<+>-]<')
-            elif t.token_type == 'greater':
-                outBf += self.get_mod(t.args[0], t.args[1], t.args[2])
-                outBf += self.run_at(t.args[0], '[>+>+<<-]>>[<<+>>-]<<')
-                outBf += self.run_at(t.args[2], '[')
-                outBf += self.run_at(t.args[0], '>-<')
-                outBf += self.run_at(t.args[2], '-]')
-                outBf += self.run_at(t.args[0], '>[<')
-                outBf += self.run_at(t.args[2], '+')
-                outBf += self.run_at(t.args[0], '>-]<')
-                outBf += self.run_at(t.args[2], '>+<[>[-]<[-]]>[<+>-]<'*2)
-            elif t.token_type not in ['malloc', 'main', '']:
+                    outBf += self.run_at(t.args[1], '[>+>+<<-]>>[<<+>>-]<<')
+                    outBf += self.run_at(t.args[1], '>[<')
+                    outBf += self.run_at(t.args[2], '+')
+                    outBf += self.run_at(t.args[1], '>-]<')
+                elif t.token_type == 'sub':
+                    outBf += self.run_at(t.args[2], '[-]')
+                    outBf += self.run_at(t.args[0], '[>+>+<<-]>>[<<+>>-]<<')
+                    outBf += self.run_at(t.args[0], '>[<')
+                    outBf += self.run_at(t.args[2], '+')
+                    outBf += self.run_at(t.args[0], '>-]<')
+                    outBf += self.run_at(t.args[1], '[>+>+<<-]>>[<<+>>-]<<')
+                    outBf += self.run_at(t.args[1], '>[<')
+                    outBf += self.run_at(t.args[2], '-')
+                    outBf += self.run_at(t.args[1], '>-]<')
+                elif t.token_type == 'putc':
+                    outBf += self.run_at(t.args[0], '.')
+                elif t.token_type == 'getc':
+                    outBf += self.run_at(t.args[0], ',')
+                elif t.token_type == 'while':
+                    outBf += self.run_at(t.args[0].replace('(',
+                                                           '').replace(')', ''), '[')
+                elif t.token_type == 'end':
+                    if len(t.args) != 0:
+                        if t.args[0] != '':
+                            if t.args[0] == '()':
+                                outBf += self.run_at('ZEROPOINT'.replace('(',
+                                                                         '').replace(')', ''), ']')
+                            else:
+                                outBf += self.run_at(t.args[0].replace('(',
+                                                                       '').replace(')', ''), ']')
+                elif t.token_type == 'not':
+                    outBf += self.run_at(t.args[1], '[-]+')
+                    outBf += self.run_at(t.args[0], '[')
+                    outBf += self.run_at(t.args[1], '[-]')
+                    outBf += self.run_at(t.args[0], '[-]]')
+                elif t.token_type == 'equal':
+                    outBf += self.run_at(t.args[2], '[-]')
+                    outBf += self.run_at(t.args[0], '[>+>+<<-]>>[<<+>>-]<<')
+                    outBf += self.run_at(t.args[0], '>[<')
+                    outBf += self.run_at(t.args[2], '+')
+                    outBf += self.run_at(t.args[0], '>-]<')
+                    outBf += self.run_at(t.args[1], '[>+>+<<-]>>[<<+>>-]<<')
+                    outBf += self.run_at(t.args[1], '>[<')
+                    outBf += self.run_at(t.args[2], '-')
+                    outBf += self.run_at(t.args[1], '>-]<')
+                    outBf += self.run_at(t.args[2], '>+<[>[-]<[-]]>[<+>-]<')
+                elif t.token_type == 'nequal':
+                    outBf += self.run_at(t.args[2], '[-]')
+                    outBf += self.run_at(t.args[0], '[>+>+<<-]>>[<<+>>-]<<')
+                    outBf += self.run_at(t.args[0], '>[<')
+                    outBf += self.run_at(t.args[2], '+')
+                    outBf += self.run_at(t.args[0], '>-]<')
+                    outBf += self.run_at(t.args[1], '[>+>+<<-]>>[<<+>>-]<<')
+                    outBf += self.run_at(t.args[1], '>[<')
+                    outBf += self.run_at(t.args[2], '-')
+                    outBf += self.run_at(t.args[1], '>-]<')
+                    outBf += self.run_at(t.args[2], '>+<[>[-]<[-]]>[<+>-]<'*2)
+                elif t.token_type == 'printint':
+                    outBf += self.run_at('ENDPOINT', '[-]')
+                    outBf += self.run_at(t.args[0], '[>+>+<<-]>>[<<+>>-]<<')
+                    outBf += self.run_at(t.args[0], '>[<')
+                    outBf += self.run_at('ENDPOINT', '+')
+                    outBf += self.run_at(t.args[0], '>-]<')
+                    outBf += self.run_at("ENDPOINT", PRINTINT_PROG)
+                elif t.token_type == 'inc':
+                    outBf += self.run_at(t.args[0], '+'*int(t.args[1]))
+                elif t.token_type == 'dec':
+                    outBf += self.run_at(t.args[0], '-'*int(t.args[1]))
+                elif t.token_type == 'mul':
+                    outBf += self.run_at(t.args[2], '[-]')
+                    outBf += self.run_at(t.args[0], '[>+>+<<-]>>[<<+>>-]<<')
+                    outBf += self.run_at(t.args[0], '>[<')
+                    outBf += self.run_at(t.args[1], '[>+>+<<-]>>[<<+>>-]<<')
+                    outBf += self.run_at(t.args[1], '>[<')
+                    outBf += self.run_at(t.args[2], '+')
+                    outBf += self.run_at(t.args[1], '>-]<')
+                    outBf += self.run_at(t.args[0], '>-]<')
+                elif t.token_type == 'mod':
+                    outBf += self.get_mod(t.args[0], t.args[1], t.args[2])
+                elif t.token_type == 'div':
+                    outBf += self.get_mod(t.args[0], t.args[1], t.args[2])
+                    outBf += self.run_at(t.args[0], '[>+>+<<-]>>[<<+>>-]<<')
+                    outBf += self.run_at(t.args[2], '[')
+                    outBf += self.run_at(t.args[0], '>-<')
+                    outBf += self.run_at(t.args[2], '-]')
+                    outBf += self.run_at(t.args[0], '>[<')
+                    outBf += self.run_at(t.args[2], '+')
+                    outBf += self.run_at(t.args[1], '[>+>+<<-]>>[<<+>>-]<<')
+                    outBf += self.run_at(t.args[1], '>[<')
+                    outBf += self.run_at(t.args[0], '>-<')
+                    outBf += self.run_at(t.args[1], '>-]<')
+                    outBf += self.run_at(t.args[0], '>]<')
+                elif t.token_type == 'less':
+                    outBf += self.get_mod(t.args[0], t.args[1], t.args[2])
+                    outBf += self.run_at(t.args[0], '[>+>+<<-]>>[<<+>>-]<<')
+                    outBf += self.run_at(t.args[2], '[')
+                    outBf += self.run_at(t.args[0], '>-<')
+                    outBf += self.run_at(t.args[2], '-]')
+                    outBf += self.run_at(t.args[0], '>[<')
+                    outBf += self.run_at(t.args[2], '+')
+                    outBf += self.run_at(t.args[0], '>-]<')
+                    outBf += self.run_at(t.args[2], '>+<[>[-]<[-]]>[<+>-]<')
+                elif t.token_type == 'greater':
+                    outBf += self.get_mod(t.args[0], t.args[1], t.args[2])
+                    outBf += self.run_at(t.args[0], '[>+>+<<-]>>[<<+>>-]<<')
+                    outBf += self.run_at(t.args[2], '[')
+                    outBf += self.run_at(t.args[0], '>-<')
+                    outBf += self.run_at(t.args[2], '-]')
+                    outBf += self.run_at(t.args[0], '>[<')
+                    outBf += self.run_at(t.args[2], '+')
+                    outBf += self.run_at(t.args[0], '>-]<')
+                    outBf += self.run_at(t.args[2], '>+<[>[-]<[-]]>[<+>-]<'*2)
+                elif t.token_type == 'and':
+                    outBf += self.run_at(t.args[2], '[-]>[-]>[-]<<')
+                    outBf += self.run_at(t.args[0], '[>+>+<<-]>>[<<+>>-]<<')
+                    outBf += self.run_at(t.args[1], '[>+>+<<-]>>[<<+>>-]<<')
+                    outBf += self.run_at(t.args[0], '>[<')
+                    outBf += self.run_at(t.args[2], '>+<')
+                    outBf += self.run_at(t.args[0], '>-]<')
+                    outBf += self.run_at(t.args[1], '>[<')
+                    outBf += self.run_at(t.args[2], '>>+<<')
+                    outBf += self.run_at(t.args[1], '>-]<')
+                    outBf += self.run_at(t.args[2], AND_PROG)
+                elif t.token_type == 'or':
+                    outBf += self.run_at(t.args[2], '[-]>[-]>[-]<<')
+                    outBf += self.run_at(t.args[0], '[>+>+<<-]>>[<<+>>-]<<')
+                    outBf += self.run_at(t.args[1], '[>+>+<<-]>>[<<+>>-]<<')
+                    outBf += self.run_at(t.args[0], '>[<')
+                    outBf += self.run_at(t.args[2], '>+<')
+                    outBf += self.run_at(t.args[0], '>-]<')
+                    outBf += self.run_at(t.args[1], '>[<')
+                    outBf += self.run_at(t.args[2], '>>+<<')
+                    outBf += self.run_at(t.args[1], '>-]<')
+                    outBf += self.run_at(t.args[2], OR_PROG)
+
+                elif t.token_type not in ['malloc', 'main', '']:
+                    print("Error In:\n    " + t.original)
+                    print("Undefined Token: '" + t.token_type + "'")
+                    exit(1)
+            except:
                 print("Error In:\n    " + t.original)
-                print("Undefined Token: '" + t.token_type + "'")
+                print("Compiler Error")
                 exit(1)
         return outBf
