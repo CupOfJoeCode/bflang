@@ -163,7 +163,26 @@ class CodeGenerator:
                 outBf += self.run_at(t.args[0], '>-<')
                 outBf += self.run_at(t.args[1], '>-]<')
                 outBf += self.run_at(t.args[0], '>]<')
-
+            elif t.token_type == 'less':
+                outBf += self.get_mod(t.args[0], t.args[1], t.args[2])
+                outBf += self.run_at(t.args[0], '[>+>+<<-]>>[<<+>>-]<<')
+                outBf += self.run_at(t.args[2], '[')
+                outBf += self.run_at(t.args[0], '>-<')
+                outBf += self.run_at(t.args[2], '-]')
+                outBf += self.run_at(t.args[0], '>[<')
+                outBf += self.run_at(t.args[2], '+')
+                outBf += self.run_at(t.args[0], '>-]<')
+                outBf += self.run_at(t.args[2], '>+<[>[-]<[-]]>[<+>-]<')
+            elif t.token_type == 'greater':
+                outBf += self.get_mod(t.args[0], t.args[1], t.args[2])
+                outBf += self.run_at(t.args[0], '[>+>+<<-]>>[<<+>>-]<<')
+                outBf += self.run_at(t.args[2], '[')
+                outBf += self.run_at(t.args[0], '>-<')
+                outBf += self.run_at(t.args[2], '-]')
+                outBf += self.run_at(t.args[0], '>[<')
+                outBf += self.run_at(t.args[2], '+')
+                outBf += self.run_at(t.args[0], '>-]<')
+                outBf += self.run_at(t.args[2], '>+<[>[-]<[-]]>[<+>-]<'*2)
             elif t.token_type not in ['malloc', 'main', '']:
                 print("Error In:\n    " + t.original)
                 print("Undefined Token: '" + t.token_type + "'")
