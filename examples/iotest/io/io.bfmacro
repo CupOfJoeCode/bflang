@@ -1,3 +1,0 @@
-malloc acc,chr,isntNewLine,zerochar,nlchar,digit,temp0,temp1;
-@incmacro io/init
-@incmacro io/getint

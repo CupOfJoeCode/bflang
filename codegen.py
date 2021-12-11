@@ -4,6 +4,9 @@ from lexer import Token
 #  and, or, div, greater, less, pow, arrayload, arraystore
 #
 
+MOD_PROG = '>>>[-]<[>+>>+<<<-]>>>[<<<+>>>-]<<<<<[-]>[<+>>>-[>+>+<<-]>>[<<+>>-]+<[>[-]<[-]]>[<+>-]<[<[-]<[>+>>+<<<-]>>>[<<<+>>>-]<<<<<[-]>>>>[-]]<<<-]>[-]>[-]>[-]>[-]<<<<<'
+PRINTINT_PROG = ">>++++++++++<<[->+>-[>+>>]>[+[-<+>]>+>>]<<<<<<]>>[-]>>>++++++++++<[->-[>+>>]>[+[-<+>]>+>>]<<<<<]>[-]>>[>++++++[-<++++++++>]<.<<+>+>[-]]<[<[->-<]++++++[->++++++++<]>.[-]]<<++++++[-<++++++++>]<.[-]<<[-<+>]<[-]"
+
 
 class CodeGenerator:
     def __init__(self, inTokens):
@@ -33,6 +36,20 @@ class CodeGenerator:
 
     def run_at(self, var, code):
         return '>'*self.memory_map[var] + code + '<'*self.memory_map[var]
+
+    def get_mod(self, arg0, arg1, arg2):
+        outBf = ''
+        outBf += self.run_at(arg2, '[-]>[-]>[-]<<')  # Reset 3
+        outBf += self.run_at(arg0, '[>+<')
+        outBf += self.run_at(arg2, '>+<')
+        outBf += self.run_at(arg0, '-]>[<+>-]<')
+
+        outBf += self.run_at(arg1, '[>+<')
+        outBf += self.run_at(arg2, '>>+<<')
+        outBf += self.run_at(arg1, '-]>[<+>-]<')
+
+        outBf += self.run_at(arg2, MOD_PROG)
+        return outBf
 
     def generate(self):
         outBf = ''
@@ -117,8 +134,7 @@ class CodeGenerator:
                 outBf += self.run_at(t.args[0], '>[<')
                 outBf += self.run_at('ENDPOINT', '+')
                 outBf += self.run_at(t.args[0], '>-]<')
-                outBf += self.run_at(
-                    "ENDPOINT", ">>++++++++++<<[->+>-[>+>>]>[+[-<+>]>+>>]<<<<<<]>>[-]>>>++++++++++<[->-[>+>>]>[+[-<+>]>+>>]<<<<<]>[-]>>[>++++++[-<++++++++>]<.<<+>+>[-]]<[<[->-<]++++++[->++++++++<]>.[-]]<<++++++[-<++++++++>]<.[-]<<[-<+>]<[-]")
+                outBf += self.run_at("ENDPOINT", PRINTINT_PROG)
             elif t.token_type == 'inc':
                 outBf += self.run_at(t.args[0], '+'*int(t.args[1]))
             elif t.token_type == 'dec':
@@ -133,17 +149,21 @@ class CodeGenerator:
                 outBf += self.run_at(t.args[1], '>-]<')
                 outBf += self.run_at(t.args[0], '>-]<')
             elif t.token_type == 'mod':
-                outBf += self.run_at(t.args[2], '[-]>[-]>[-]<<')  # Reset 3
-                outBf += self.run_at(t.args[0], '[>+<')
-                outBf += self.run_at(t.args[2], '>+<')
-                outBf += self.run_at(t.args[0], '-]>[<+>-]<')
+                outBf += self.get_mod(t.args[0], t.args[1], t.args[2])
+            elif t.token_type == 'div':
+                outBf += self.get_mod(t.args[0], t.args[1], t.args[2])
+                outBf += self.run_at(t.args[0], '[>+>+<<-]>>[<<+>>-]<<')
+                outBf += self.run_at(t.args[2], '[')
+                outBf += self.run_at(t.args[0], '>-<')
+                outBf += self.run_at(t.args[2], '-]')
+                outBf += self.run_at(t.args[0], '>[<')
+                outBf += self.run_at(t.args[2], '+')
+                outBf += self.run_at(t.args[1], '[>+>+<<-]>>[<<+>>-]<<')
+                outBf += self.run_at(t.args[1], '>[<')
+                outBf += self.run_at(t.args[0], '>-<')
+                outBf += self.run_at(t.args[1], '>-]<')
+                outBf += self.run_at(t.args[0], '>]<')
 
-                outBf += self.run_at(t.args[1], '[>+<')
-                outBf += self.run_at(t.args[2], '>>+<<')
-                outBf += self.run_at(t.args[1], '-]>[<+>-]<')
-
-                outBf += self.run_at(
-                    t.args[2], '>>>[-]<[>+>>+<<<-]>>>[<<<+>>>-]<<<<<[-]>[<+>>>-[>+>+<<-]>>[<<+>>-]+<[>[-]<[-]]>[<+>-]<[<[-]<[>+>>+<<<-]>>>[<<<+>>>-]<<<<<[-]>>>>[-]]<<<-]>[-]>[-]>[-]>[-]<<<<<')
             elif t.token_type not in ['malloc', 'main', '']:
                 print("Error In:\n    " + t.original)
                 print("Undefined Token: '" + t.token_type + "'")

@@ -1,5 +1,15 @@
-malloc;
+malloc a, b, c, d,nl;
 
 main {
-    
+    copy 10 -> nl;
+    copy 21 -> a;
+    copy 6 -> b;
+
+
+    div a, b -> c;
+    mod a, b -> d;
+
+    printint c;
+    putc nl;
+    printint d;
 }
