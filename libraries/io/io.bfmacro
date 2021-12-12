@@ -1,0 +1,2 @@
+malloc io.num, io.inchar, io.indigit, io.ten, io.zerochar, io.isntten, io.temp0, io.temp1;
+@incmacro io/scanint

@@ -1,0 +1,15 @@
+copy '0' -> io.zerochar;
+copy 10 -> io.ten;
+copy 0 -> io.num;
+copy 1 -> io.isntten;
+while(io.isntten) {
+    getc io.inchar;
+    sub io.inchar, io.zerochar -> io.indigit;
+    nequal io.inchar, io.ten -> io.isntten;
+    copy io.isntten -> io.temp0;
+    if(io.temp0) {
+        mul io.num, io.ten -> io.temp1;
+        add io.temp1, io.indigit -> io.num;
+        copy 0 -> io.temp0;
+    (io.temp0) }
+(io.isntten) }
