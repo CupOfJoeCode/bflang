@@ -1,7 +1,0 @@
-malloc;
-
-main {
-    @prints "Hello, World!"
-    
-
-}

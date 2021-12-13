@@ -41,7 +41,6 @@ class PreProcessor:
                 outChar += c
         return outCode
 
-    # TODO: Add prints
     def expand_macros(self, inCode):
         macros = {
 
@@ -61,6 +60,27 @@ class PreProcessor:
                     elif macroArgs[0] == 'incmacro':
                         with open(self.folder + '/' + macroArgs[1] + '.bfmacro') as fp:
                             macros[macroArgs[1]] = fp.read()
+                    elif macroArgs[0] == 'prints':
+                        useVar = macroArgs[1]
+                        inString = ' '.join(macroArgs[2:])
+                        outMacro = 'copy ' + \
+                            str(ord(inString[0])) + ' -> ' + useVar + \
+                            ';\nputc ' + useVar + ';\n'
+                        prevChar = ord(inString[0])
+                        for i in range(1, len(inString)):
+                            c = ord(inString[i])
+                            if c == prevChar:
+                                outMacro += 'putc ' + useVar + ';\n'
+                            elif c > prevChar:
+                                outMacro += 'inc ' + useVar + \
+                                    ', ' + str(c - prevChar) + \
+                                    ';\nputc ' + useVar + ';\n'
+                            else:
+                                outMacro += 'dec ' + useVar + \
+                                    ', ' + str(prevChar - c) + \
+                                    ';\nputc ' + useVar + ';\n'
+                            prevChar = c
+                        outCode += outMacro
                 macro = ''
             elif scan:
                 outCode += c
