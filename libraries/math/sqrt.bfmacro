@@ -1,0 +1,10 @@
+copy 1 -> math.ltflag;
+copy 0 -> math.base;
+while(math.ltflag) {
+    copy math.base -> math.baseCopy;
+    mul math.base, math.baseCopy -> math.result;
+    less math.result, math.in0 -> math.ltflag;
+    inc math.base, 1;
+(math.ltflag) }
+dec math.base, 1;
+copy math.base -> math.out;
