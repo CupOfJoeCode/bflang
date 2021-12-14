@@ -1,7 +1,13 @@
 malloc;
 
 \Used to test libraries\
+@incmacro math/math
+@incmacro io/io
+
+:math/math:
+:io/io:
+
 
 main {
-
+    
 }
