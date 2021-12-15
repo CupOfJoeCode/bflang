@@ -9,5 +9,5 @@ malloc char, num1, num2, out;
 
 
 main {
-    
+    \@prints char Test\
 }
