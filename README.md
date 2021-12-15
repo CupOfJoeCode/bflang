@@ -5,6 +5,11 @@ A custom language which compiles to brainfuck.
 Have a project in a folder, and have a "main.bfl" file in the folder.
 "python main.py [folder]" - generates an out.bf file in [folder] 
 
+# Things to add:
+- [ ] Allocating memory for arrays
+- [ ] storearray instruction
+- [ ] loadarray instruction
+
 # Syntax highlighting support for vscode:
 https://github.com/CupOfJoeCode/bflang-vscode
 
@@ -38,7 +43,8 @@ https://github.com/CupOfJoeCode/bflang-vscode
 * **@prints** [*var*] Some sort of string
 
 # Structure of a program:
-```malloc var1, var2, var3; \This is where you declare variables\
+```
+malloc var1, var2, var3; \This is where you declare variables\
 
 \This is a comment\ 
 
@@ -56,4 +62,5 @@ main {
         copy 0 -> var2; \If statements function as while statements
         and it is good practice to end them with setting the variable to 0\
     (var2) } 
-}```
+}
+```
