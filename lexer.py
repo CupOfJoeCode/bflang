@@ -2,6 +2,9 @@ from re import L
 
 VALID_BF = "+-<>,.[]"
 
+# The lexer just turns instruction strings into Token objects
+# which contain a string type, and a list of string arguments
+
 
 class Token:
     def __init__(self, token_type, args, original=""):
@@ -9,7 +12,7 @@ class Token:
         self.args = args
         self.original = original
         self.original_filtered = original
-        for c in VALID_BF:
+        for c in VALID_BF:  # Have a copy of the original instruction, but filter out the valid brainfuck characters
             self.original_filtered = self.original_filtered.replace(c, '')
 
     def __str__(self):
