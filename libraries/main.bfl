@@ -1,4 +1,4 @@
-malloc;
+malloc num;
 
 \Used to test libraries\
 @incmacro math/math

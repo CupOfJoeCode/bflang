@@ -1,0 +1,10 @@
+copy 1 -> math.out;
+copy math.in0 -> math.counter;
+copy 1 -> math.const;
+while(math.counter) {
+    sub math.counter, math.const -> math.temp0;
+    inc math.temp0, 1;
+    mul math.temp0, math.out -> math.temp1;
+    copy math.temp1 -> math.out;
+    dec math.counter, 1;
+(math.counter) }

@@ -1,4 +1,7 @@
-malloc math.in0, math.in1, math.out, math.ltflag, math.gtflag, math.eqflag, math.neqflag, math.base, math.baseCopy, math.result;
+malloc math.in0, math.in1, math.out, math.ltflag, math.gtflag, math.eqflag, math.neqflag;
+malloc math.base, math.baseCopy, math.result;
+malloc math.counter, math.const,math.temp0, math.temp1;
 @incmacro math/sqrt
 @incmacro math/min
 @incmacro math/max
+@incmacro math/fact
