@@ -30,7 +30,8 @@ class PreProcessor:
             '->', ',')  # if to while and -> to ,
         code = code.replace('{', ';').replace(
             '}', 'end;')  # { to ; and } to end;
-        code = re.sub(' +', ' ', code)  # Remove double spaces
+        # Remove double spaces with regular expression
+        code = re.sub(' +', ' ', code)
         code = code.replace('while(', 'while ')
         outCode = ''
         scan = True
@@ -124,7 +125,8 @@ class PreProcessor:
             self.mainfile = self.expand_macros(self.mainfile)  # Expands macros
 
         self.mainfile = self.simplify(self.mainfile)  # Simplify code
-        self.mainlines = self.mainfile.split(';') # Seperate code into list of instruction strings seperated by ';' 
+        # Seperate code into list of instruction strings seperated by ';'
+        self.mainlines = self.mainfile.split(';')
         while '' in self.mainlines:
-            self.mainlines.remove('') # Remove all blank instructions
+            self.mainlines.remove('')  # Remove all blank instructions
         return self.mainlines
