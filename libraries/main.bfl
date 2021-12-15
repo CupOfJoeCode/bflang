@@ -1,4 +1,4 @@
-malloc;
+malloc char, num1, num2, out;
 
 \Used to test libraries\
 @incmacro math/math
@@ -9,5 +9,5 @@ malloc;
 
 
 main {
-
+    
 }

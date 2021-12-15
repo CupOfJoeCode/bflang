@@ -5,21 +5,22 @@ from lexer import Token
 #
 
 MOD_PROG = '>++++++++++++><[->->+>>+<<<[>-]>[->>[-<<<+>>>]<]<<<]>[-]>>>[<<<<<+>>>>>-]<<<<<'
+# MOD_PROG = '>>>[-]<[>+>>+<<<-]>>>[<<<+>>>-]<<<<<[-]>[<+>>>-[>+>+<<-]>>[<<+>>-]+<[>[-]<[-]]>[<+>-]<[<[-]<[>+>>+<<<-]>>>[<<<+>>>-]<<<<<[-]>>>>[-]]<<<-]>[-]>[-]>[-]>[-]<<<<<'
 PRINTINT_PROG = '>>++++++++++<<[->+>-[>+>>]>[+[-<+>]>+>>]<<<<<<]>>[-]>>>++++++++++<[->-[>+>>]>[+[-<+>]>+>>]<<<<<]>[-]>>[>++++++[-<++++++++>]<.<<+>+>[-]]<[<[->-<]++++++[->++++++++<]>.[-]]<<++++++[-<++++++++>]<.[-]<<[-<+>]<[-]'
 AND_PROG = '>>>[-]<<<>[>[>+<[-]]<[-]]>>[<<<+>>>-]<[-]<[-]<'
 OR_PROG = '>[>>[-]+<<[-]]>[>[-]+<[-]]>[<<<+>>>[-]]<<<'
 
 
 class CodeGenerator:
-    def __init__(self, inTokens):
+    def __init__(self, inTokens, spacing=7):
         self.tokens = self.combine_malloc(inTokens)
         self.memory_map = {}
         self.current_line = ''
         malloc = self.tokens[0]
-        var_count = 6
+        var_count = spacing
         for var in malloc.args:
             self.memory_map[var] = var_count
-            var_count += 6
+            var_count += spacing
 
     def combine_malloc(self, tokens):
         outTokens = []
