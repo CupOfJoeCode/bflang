@@ -3,6 +3,13 @@ from preprocess import PreProcessor
 from lexer import Lexer
 from codegen import CodeGenerator
 
+# --------------------------------------------
+# Bflang is a custom programming language, which cross-compiles to brainfuck
+# Bflang is sort of inspired by assembly, because of its simple instructions
+#
+# https://github.com/CupOfJoeCode/bflang
+# --------------------------------------------
+
 IN_FOLDER = sys.argv[1]
 
 
