@@ -1,4 +1,4 @@
-malloc num;
+malloc;
 
 \Used to test libraries\
 @incmacro math/math
@@ -9,5 +9,4 @@ malloc num;
 
 
 main {
-    
 }

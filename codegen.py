@@ -65,9 +65,15 @@ class CodeGenerator:
                 # outBf += '\n' + t.original + '\n'
                 self.current_line = t.original
                 if t.token_type == 'copy':
-                    if t.args[0].isdigit():
+                    if t.args[0].isdigit() or t.args[0][1:].isdigit():
+                        num = int(t.args[0])
+                        if num < 0:
+                            numTimes = 256 + num
+                        else:
+                            numTimes = num
+
                         outBf += self.run_at(t.args[1],
-                                             '[-]' + ('+'*int(t.args[0])))
+                                             '[-]' + ('+'*numTimes))
                     else:
                         outBf += self.run_at(t.args[1], '[-]')
                         outBf += self.run_at(t.args[0],
