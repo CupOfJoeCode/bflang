@@ -46,7 +46,7 @@ class CodeGenerator:
 
     def get_mod(self, arg0, arg1, arg2):
         outBf = ''
-        outBf += self.run_at(arg2, '[-]>[-]>[-]<<')  # Reset 3
+        outBf += self.run_at(arg2, '[-]>[-]>[-]<<')
         outBf += self.run_at(arg0, '[>+<')
         outBf += self.run_at(arg2, '>+<')
         outBf += self.run_at(arg0, '-]>[<+>-]<')
@@ -62,7 +62,6 @@ class CodeGenerator:
         outBf = ''
         for t in self.tokens:
             try:
-                # outBf += '\n' + t.original + '\n'
                 self.current_line = t.original
                 if t.token_type == 'copy':
                     if t.args[0].isdigit() or t.args[0][1:].isdigit():
