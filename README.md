@@ -36,3 +36,24 @@ https://github.com/CupOfJoeCode/bflang-vscode
 * **@define** [NAME] [value]
 * **@incmacro** [file]
 * **@prints** [*var*] Some sort of string
+
+# Structure of a program:
+```malloc var1, var2, var3; \This is where you declare variables\
+
+\This is a comment\ 
+
+@define VALUE 10
+
+main {
+    \This is where code goes\
+    while(var1) {
+
+    (var) } \While and if statements must be closed with the name of the variable\
+
+    printint var2; \Instructions should end in ";"\
+
+    if(var2) {
+        copy 0 -> var2; \If statements function as while statements
+        and it is good practice to end them with setting the variable to 0\
+    (var2) } 
+}```
