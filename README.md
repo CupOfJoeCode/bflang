@@ -7,6 +7,7 @@ Have a project in a folder, and have a "main.bfl" file in the folder.
 
 # Instruction List:
 (variables can not be the same in one instruction, or it will break)
+* **malloc** var,var,...;
 * **copy** var/const -> var;
 * **inc** var, const;
 * **dec** var, const;
