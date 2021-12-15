@@ -1,0 +1,8 @@
+copy 128 -> math.temp0;
+greater math.in0, math.temp0 -> math.gtflag;
+copy math.in0 -> math.out;
+if(math.gtflag) {
+    copy 0 -> math.temp0;
+    sub math.temp0, math.in0 -> math.out;
+    copy 0 -> math.gtflag;
+(math.gtflag) }

@@ -5,3 +5,4 @@ malloc math.counter, math.const,math.temp0, math.temp1;
 @incmacro math/min
 @incmacro math/max
 @incmacro math/fact
+@incmacro math/abs
