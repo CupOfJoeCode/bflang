@@ -2,6 +2,7 @@ import sys
 from preprocess import PreProcessor
 from lexer import Lexer
 from codegen import CodeGenerator
+from glob import glob
 
 # --------------------------------------------
 # Bflang is a custom programming language, which cross-compiles to brainfuck
@@ -10,11 +11,23 @@ from codegen import CodeGenerator
 # https://github.com/CupOfJoeCode/bflang
 # --------------------------------------------
 
-IN_FOLDER = sys.argv[1]
-
 
 def main():
+    if len(sys.argv) < 2:
+        print('Error: no input directory')
+        quit()
+
+    IN_FOLDER = sys.argv[1].replace('\\', '/')
+
+    files = list(map(lambda x: x.replace(
+        '\\', '/'), glob(f'{IN_FOLDER}/*.bfl')))
+    print(files)
+    if f'{IN_FOLDER}/main.bfl' not in files:
+        print('Error: no `main.bfl` file')
+        quit()
+
     pre = PreProcessor(IN_FOLDER)
+
     processed_code = pre.process()
     lex = Lexer(processed_code)
     tokens = lex.generate()
