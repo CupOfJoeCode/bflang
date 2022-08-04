@@ -31,9 +31,10 @@ class CodeGenerator:
     def combine_malloc(self, tokens):
         outTokens = []
         outvars = []
-        # Adds 2 extra variables to the end. 'ZEROPOINT' is unused, and is for when you need a zero value,
-        # and 'ENDPOINT' is used for more complex instructions like 'printint'
-        BUILT_IN_VARS = ['ZEROPOINT', 'ENDPOINT']
+        # Adds 2 extra variables to the end. '__ZEROPOINT' is unused, and is for when you need a zero value,
+        # and '__ENDPOINT' is used for more complex instructions like 'printint'
+        # '__TEMPA' and '__TEMPB' are used with the @set directive
+        BUILT_IN_VARS = ['__TEMPA', '__TEMPB', '__ZEROPOINT', '__ENDPOINT']
         for t in tokens:
             if t.token_type == 'malloc':
                 for a in t.args:
@@ -137,8 +138,8 @@ class CodeGenerator:
                     if len(t.args) != 0:
                         if t.args[0] != '':
                             if t.args[0] == '()':
-                                outBf += self.run_at('ZEROPOINT'.replace('(',
-                                                                         '').replace(')', ''), ']')
+                                outBf += self.run_at('__ZEROPOINT'.replace('(',
+                                                                           '').replace(')', ''), ']')
                             else:
                                 outBf += self.run_at(t.args[0].replace('(',
                                                                        '').replace(')', ''), ']')
@@ -178,13 +179,13 @@ class CodeGenerator:
                     # Not but twice
                     outBf += self.run_at(t.args[2], '>+<[>[-]<[-]]>[<+>-]<'*2)
                 elif t.token_type == 'printint':
-                    # Copyies variable to ENDPOINT and runs PRINTINT_PROG at ENDPOINT
-                    outBf += self.run_at('ENDPOINT', '[-]')
+                    # Copyies variable to __ENDPOINT and runs PRINTINT_PROG at __ENDPOINT
+                    outBf += self.run_at('__ENDPOINT', '[-]')
                     outBf += self.run_at(t.args[0], '[>+>+<<-]>>[<<+>>-]<<')
                     outBf += self.run_at(t.args[0], '>[<')
-                    outBf += self.run_at('ENDPOINT', '+')
+                    outBf += self.run_at('__ENDPOINT', '+')
                     outBf += self.run_at(t.args[0], '>-]<')
-                    outBf += self.run_at('ENDPOINT', PRINTINT_PROG)
+                    outBf += self.run_at('__ENDPOINT', PRINTINT_PROG)
                 elif t.token_type == 'inc':
                     outBf += self.run_at(t.args[0], '+'*int(t.args[1]))
                 elif t.token_type == 'dec':

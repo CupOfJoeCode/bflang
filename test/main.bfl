@@ -1,0 +1,24 @@
+main {
+
+    malloc x, z;
+
+    @set z 12+x
+    \ 
+    copy 12 -> z;
+    copy z -> __TEMPA;
+    copy x -> __TEMPB;
+    add __TEMPA, __TEMPB -> z;
+    \
+
+    @set x z+12/6
+
+    \ 
+    copy z -> x;
+    copy x -> __TEMPA; 
+    copy 12 -> __TEMPB;
+    add __TEMPA, __TEMPB -> x;
+    copy x -> __TEMPA;
+    copy 6 -> __TEMPB;
+    div __TEMPA, __TEMPB -> 6;
+    \
+}

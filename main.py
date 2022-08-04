@@ -21,7 +21,6 @@ def main():
 
     files = list(map(lambda x: x.replace(
         '\\', '/'), glob(f'{IN_FOLDER}/*.bfl')))
-    print(files)
     if f'{IN_FOLDER}/main.bfl' not in files:
         print('Error: no `main.bfl` file')
         quit()
